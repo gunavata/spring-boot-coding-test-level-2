@@ -31,4 +31,12 @@ public class Task {
     @NonNull
     UUID user_id;
 
+    public void replace(Task newTask) {
+        this.title = newTask.title;
+        this.description = newTask.description;
+        this.status = newTask.status;
+        this.project_id = newTask.project_id;
+        this.user_id = newTask.user_id;
+    }
+
 }
