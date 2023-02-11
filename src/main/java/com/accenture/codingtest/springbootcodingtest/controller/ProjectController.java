@@ -7,6 +7,7 @@ import com.accenture.codingtest.springbootcodingtest.repository.TaskRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,20 +32,19 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<Project>> getAllProjects() {
         var projectList = this.repository.findAll();
-        return ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(projectList);
+        return ok(projectList);
     }
 
     @GetMapping(path = "/{project_id}")
     public ResponseEntity<Project> getProjectById(@PathVariable("project_id") UUID id) {
         return this.repository.findById(id)
-                .map(project -> ok().contentType(MediaType.APPLICATION_JSON).body(project))
+                .map(ResponseEntity::ok)
                 .orElse(notFound().build());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Secured({"PRODUCT_OWNER"})
     public Project createOneProject(@RequestBody Project project) {
         return this.repository.save(project);
     }

@@ -25,9 +25,18 @@ public class User {
     @NonNull
     String password;
 
+    public User() {
+
+    }
+
     public void replace(User newUser) {
         this.username = newUser.username;
         this.password = newUser.password;
     }
 
+    public User(UUID id, @NonNull String username, @NonNull String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
 }
