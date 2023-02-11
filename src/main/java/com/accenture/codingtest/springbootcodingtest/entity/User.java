@@ -25,4 +25,9 @@ public class User {
     @NonNull
     String password;
 
+    public void replace(User newUser) {
+        this.username = newUser.username;
+        this.password = newUser.password;
+    }
+
 }
