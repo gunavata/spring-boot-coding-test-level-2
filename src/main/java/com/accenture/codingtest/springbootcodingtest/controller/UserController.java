@@ -1,10 +1,12 @@
 package com.accenture.codingtest.springbootcodingtest.controller;
 
 import com.accenture.codingtest.springbootcodingtest.entity.User;
+import com.accenture.codingtest.springbootcodingtest.model.RoleEnum;
 import com.accenture.codingtest.springbootcodingtest.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,7 @@ import static org.springframework.http.ResponseEntity.*;
  */
 @Controller
 @RequestMapping("/api/v1/users")
+@Secured({"ADMIN"})
 public class UserController {
 
     private final UserRepository repository;
@@ -29,15 +32,13 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         var userList = this.repository.findAll();
-        return ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(userList);
+        return ok(userList);
     }
 
     @GetMapping(path = "/{user_id}")
     public ResponseEntity<User> getUserById(@PathVariable("user_id") UUID id) {
         return this.repository.findById(id)
-                .map(user -> ok().contentType(MediaType.APPLICATION_JSON).body(user))
+                .map(ResponseEntity::ok)
                 .orElse(notFound().build());
     }
 
