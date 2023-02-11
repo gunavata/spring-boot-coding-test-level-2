@@ -19,4 +19,9 @@ public class Project {
 
     @NonNull
     String name;
+
+    // Can actually just use setter since its a single field
+    public void replace(Project newProject) {
+        this.name = name;
+    }
 }
